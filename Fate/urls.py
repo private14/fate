@@ -18,8 +18,9 @@ from django.urls import path, include
 from graphene_django.views import GraphQLView
 from .schema import schema
 
+from data_migration.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('account/', include('accounts.urls')),
+    path('data/migration/', include('data_migration.urls')),
     path('graphql/', GraphQLView.as_view(graphiql=True, schema=schema)),
 ]

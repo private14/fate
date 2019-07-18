@@ -47,13 +47,17 @@ class TestCase(models.Model):
         ordering = ['id']
 
 
-# 测试项目
-class Project(models.Model):
+# 测试环境
+class Env(models.Model):
     # id
     id = models.AutoField(primary_key=True)
-    # 项目名字
-    projectName = models.CharField(max_length=50)
+    # 环境名字
+    envName = models.CharField(max_length=50)
+    # 环境url dict
+    urlDict = models.CharField(max_length=1000, blank=True, null=True)
+    # 环境对应数据库 dict
+    sqlDict = models.CharField(max_length=1000, blank=True, null=True)
 
     class Meta:
-        db_table = 'Project'
+        db_table = 'Env'
         ordering = ['id']
