@@ -8,7 +8,7 @@ class UserType(DjangoObjectType):
         model = User
 
 
-# 定义动作约素输入类型
+# 定义动作，类似POST, PUT, DELETE
 class UserInput(graphene.InputObjectType):
     id = graphene.ID(required=True)
     account = graphene.String(required=True)
@@ -35,7 +35,7 @@ class CreateUser(graphene.Mutation):
         return CreateUser(user=user, ok=ok)
 
 
-# 定义一个查询语句
+# 定义查询，类似GET
 class Query(object):
     all_user = graphene.List(UserType)
     
