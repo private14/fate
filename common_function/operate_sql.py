@@ -35,7 +35,13 @@ def select_mysql(sql, mysql_dict):
 def select_one_date(sql_data_list, mysql_dict):
     db = connect_mysql(mysql_dict)
     cursor = db.cursor()
-    sql = 'select {} from {} where {}="{}";'.format(sql_data_list['*'], sql_data_list['table'], sql_data_list['condition'], sql_data_list['value'])
+    if 'and' in sql_data_list.keys():
+        sql = 'select {} from {} where {}="{}" and {};'.format(sql_data_list['*'], sql_data_list['table'],
+                                                               sql_data_list['condition'], sql_data_list['value'],
+                                                               sql_data_list['and'])
+    else:
+        sql = 'select {} from {} where {}="{}";'.format(sql_data_list['*'], sql_data_list['table'],
+                                                        sql_data_list['condition'], sql_data_list['value'])
     cursor.execute(sql)
     data = cursor.fetchall()
     assert data is not None
