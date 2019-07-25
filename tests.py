@@ -1,8 +1,7 @@
 import requests
-import json
 
 payload = {
-    'id': "PN00004026-0001",
+    'id': "PN00000039-0001",
     'env': 'sit2',
 }
 
