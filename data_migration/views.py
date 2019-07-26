@@ -214,13 +214,19 @@ class DataView(View):
         }
         if select_one_date(sql_data_list, sit1_connect_dict_all['product']) != []:
             resource_id_rule = select_one_date(sql_data_list, sit1_connect_dict_all['product'])
-            sit1_product_interest_rule = []
             for i in resource_id_rule:
-                sit1_product_interest_rule.append(select_mysql('select * from product_interest_rule where {}="{}";'.format('interest_rule_id', i[0]), sit1_connect_dict_all['product']))
-                operate_mysql('delete from product_interest_rule where {}="{}"'.format('resource_id', i[0]), env_connect_dict_all['product'])
-
-            print(sit1_product_interest_rule)
-
+                if select_mysql('select * from product_interest_rule where {}="{}"'.format('interest_rule_id', i[0]), env_connect_dict_all['product']) != []:
+                    operate_mysql('delete from product_interest_rule where {}="{}"'.format('interest_rule_id', i[0]), env_connect_dict_all['product'])
+                operate_mysql('INSERT INTO product_interest_rule VALUES {};'.format(insert_data(select_mysql('select * from product_interest_rule where {}="{}";'.format('interest_rule_id', i[0]), sit1_connect_dict_all['product']))).replace("'None'", "Null"), env_connect_dict_all['product'])
+        # 表 product_interest_price_param 息费定价属性表
+        if resource_id_rule != []:
+            for i in resource_id_rule:
+                if select_mysql('select * from product_interest_price_param where {}="{}"'.format('INTEREST_RULE_ID', i[0]), env_connect_dict_all['product']) != []:
+                    operate_mysql('delete from product_interest_price_param where {}="{}"'.format('INTEREST_RULE_ID', i[0]), env_connect_dict_all['product'])
+                a = (insert_data(select_mysql('select * from product_interest_price_param where {}="{}";'.format('interest_rule_id', i[0]), sit1_connect_dict_all['product'])).replace("'None'", "Null"))
+                print(a.split())
+                # for y in list(insert_data(select_mysql('select * from product_interest_price_param where {}="{}";'.format('interest_rule_id', i[0]), sit1_connect_dict_all['product'])).replace("'None'", "Null")):
+                #     operate_mysql('INSERT INTO product_interest_price_param VALUES {};'.format(y), env_connect_dict_all['product'])
 
         return "pass"
 
