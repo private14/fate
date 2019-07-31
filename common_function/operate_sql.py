@@ -2,6 +2,7 @@ import pymysql
 from data_migration.views import *
 import datetime
 from decimal import *
+from time import sleep
 
 
 # 操作 pymysql
