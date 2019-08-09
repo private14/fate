@@ -102,9 +102,8 @@ class DataView(View):
                 operate_mysql(
                     'delete from credit_merchant_product_limit_info where {}="{}"'.format('merchant_id', merchant_id),
                     env_connect_dict_all['credittrans'])
-            operate_mysql('INSERT INTO credit_merchant_product_limit_info VALUES {};'.format(
-                insert_data(sit1_credit_merchant_product_limit_info).replace("'None'", "Null")),
-                env_connect_dict_all['credittrans'])
+            for i in sit1_credit_merchant_product_limit_info:
+                operate_mysql('INSERT INTO credit_merchant_product_limit_info VALUES {};'.format(insert_data(i).replace("'None'", "Null")), env_connect_dict_all['credittrans'])
         # 表 credit_merchant_limit_info 商户贷款额度信息表
         sit1_credit_merchant_limit_info = select_mysql('select * from credit_merchant_limit_info where Merchant_ID= "{}";'.format(merchant_id), sit1_connect_dict_all['credittrans'])
         if sit1_credit_merchant_limit_info != []:
@@ -458,20 +457,14 @@ class DataView(View):
                     if select_mysql('select * from user_address_contact_station_info where {}="{}"'.format('station_id', i[0]), sit1_connect_dict_all['loanuser']) != []:
                         operate_mysql('INSERT INTO user_address_contact_station_info VALUES {};'.format(insert_data(select_mysql('select * from user_address_contact_station_info where {}="{}"'.format('station_id', i[0]), sit1_connect_dict_all['loanuser']))).replace("'None'", "Null"), env_connect_dict_all['loanuser'])
             # 表 user_organization_info 组织表
-            creator = select_mysql('select * from user_organ_basic_info where {}="{}"'.format('user_id', merchant_id), sit1_connect_dict_all['loanuser'])
-            organ_id = []
-            for i in creator:
-                if i != None:
-                    if insert_data(select_mysql('select organ_id from user_organization_info where {}="{}"'.format('creator', i[0]), sit1_connect_dict_all['loanuser'])) != None:
-                        organ_id.append(select_mysql('select organ_id from user_organization_info where {}="{}"'.format('creator', i[0]), sit1_connect_dict_all['loanuser']))
-            for y in organ_id:
-                if y != None:
-                    operate_mysql('delete from user_organization_info where {}="{}"'.format('organ_id', y[0]), env_connect_dict_all['loanuser'])
-                    if select_mysql('select * from user_organization_info where {}="{}"'.format('organ_id', y[0]), sit1_connect_dict_all['loanuser']) != []:
-                        operate_mysql('INSERT INTO user_organization_info VALUES {};'.format(insert_data(select_mysql('select * from user_organization_info where {}="{}"'.format('organ_id', y[0]), sit1_connect_dict_all['loanuser']))).replace("'None'", "Null"), env_connect_dict_all['loanuser'])
-
+            creator = select_mysql('select creator from user_organ_basic_info where {}="{}"'.format('user_id', merchant_id), sit1_connect_dict_all['loanuser'])
+            if creator != None:
+                organ_id = select_mysql('select organ_id from user_organization_info where {}="{}"'.format('creator', creator), sit1_connect_dict_all['loanuser'])
+                if organ_id != None:
+                    operate_mysql('delete from user_organization_info where {}="{}"'.format('organ_id', organ_id), env_connect_dict_all['loanuser'])
+                    if select_mysql('select * from user_organization_info where {}="{}"'.format('organ_id', organ_id), sit1_connect_dict_all['loanuser']) != []:
+                        operate_mysql('INSERT INTO user_organization_info VALUES {};'.format(insert_data(select_mysql('select * from user_organization_info where {}="{}"'.format('organ_id', organ_id), sit1_connect_dict_all['loanuser']))).replace("'None'", "Null"), env_connect_dict_all['loanuser'])
         return "pass"
-
 
 
 
