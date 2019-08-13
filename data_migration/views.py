@@ -9,7 +9,10 @@ import datetime
 
 
 class DataView(View):
-
+    """
+    get:
+        Return a highlight instance
+    """
     @api_view(['GET'])
     def copy_merchant_id(request):
         # 获取传入参数

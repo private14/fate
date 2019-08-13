@@ -17,10 +17,15 @@ from django.contrib import admin
 from django.urls import path, include
 from graphene_django.views import GraphQLView
 from .schema import schema
-
 from data_migration.views import *
+from rest_framework.documentation import include_docs_urls
+
+API_TITLE = 'Django API'
+API_DESCRIPTION = 'A Web API for creating and viewing highlighted code snippets.'
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('data/migration/', include('data_migration.urls')),
     path('graphql/', GraphQLView.as_view(graphiql=True, schema=schema)),
+    path('swagger/', include('swagger.urls')),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
