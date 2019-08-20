@@ -61,3 +61,19 @@ class Env(models.Model):
     class Meta:
         db_table = 'Env'
         ordering = ['id']
+
+
+# copy的产品
+class CopyProduct(models.Model):
+    # id
+    id = models.AutoField(primary_key=True)
+    # 环境名字
+    productId = models.CharField(max_length=50)
+    # 环境url dict
+    proEnv = models.CharField(max_length=30, blank=True, null=True)
+    # 环境对应数据库 dict
+    endEnv = models.CharField(max_length=30, blank=True, null=True)
+
+    class Meta:
+        db_table = 'CopyProduct'
+        ordering = ['id']

@@ -43,14 +43,13 @@ INSTALLED_APPS = [
     'accounts',
     'data_migration',
     'swagger',
-
 ]
 
 # swagger 配置项
 SWAGGER_SETTINGS = {
     # 基础样式
     'SECURITY_DEFINITIONS': {
-        "basic":{
+        "basic": {
             'type': 'basic'
         }
     },

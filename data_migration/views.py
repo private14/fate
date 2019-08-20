@@ -4,11 +4,13 @@ from django.views import View
 from accounts.models import *
 from django.forms.models import model_to_dict
 from common_function.operate_sql import *
+from rest_framework.views import APIView
+from rest_framework.response import Response
 import json
 import datetime
 
 
-class DataView(View):
+class DataView(APIView):
     """
     get:
         Return a highlight instance
@@ -18,7 +20,8 @@ class DataView(View):
         # 获取传入参数
         id = request.GET.get('id', '')
         env = request.GET.get('env', '')
-        return Response(DataView.copy_merchant_id_by_sit1(env_name=env, id=id))
+        source = request.GET.get('source', '')
+        return Response(DataView.copy_merchant_id_by_sit1(env_name=env, id=id, source=source))
 
     @staticmethod
     def get_modules(env_name):
@@ -105,9 +108,15 @@ class DataView(View):
                 operate_mysql(
                     'delete from credit_merchant_product_limit_info where {}="{}"'.format('merchant_id', merchant_id),
                     env_connect_dict_all['credittrans'])
-            for i in sit1_credit_merchant_product_limit_info:
-                operate_mysql('INSERT INTO credit_merchant_product_limit_info VALUES {};'.format(insert_data(i).replace("'None'", "Null")), env_connect_dict_all['credittrans'])
-        # 表 credit_merchant_limit_info 商户贷款额度信息表
+
+            if type(sit1_credit_merchant_product_limit_info[0]) == str:
+                operate_mysql('INSERT INTO credit_merchant_product_limit_info VALUES {};'.format(
+                    insert_data(sit1_credit_merchant_product_limit_info).replace("'None'", "Null")),
+                    env_connect_dict_all['credittrans'])
+            else:
+                for i in sit1_credit_merchant_product_limit_info:
+                    operate_mysql('INSERT INTO credit_merchant_product_limit_info VALUES {};'.format(insert_data(i).replace("'None'", "Null")), env_connect_dict_all['credittrans'])
+                    # 表 credit_merchant_limit_info 商户贷款额度信息表
         sit1_credit_merchant_limit_info = select_mysql('select * from credit_merchant_limit_info where Merchant_ID= "{}";'.format(merchant_id), sit1_connect_dict_all['credittrans'])
         if sit1_credit_merchant_limit_info != []:
             sql_data_list = {
@@ -467,7 +476,6 @@ class DataView(View):
                     operate_mysql('delete from user_organization_info where {}="{}"'.format('organ_id', organ_id), env_connect_dict_all['loanuser'])
                     if select_mysql('select * from user_organization_info where {}="{}"'.format('organ_id', organ_id), sit1_connect_dict_all['loanuser']) != []:
                         operate_mysql('INSERT INTO user_organization_info VALUES {};'.format(insert_data(select_mysql('select * from user_organization_info where {}="{}"'.format('organ_id', organ_id), sit1_connect_dict_all['loanuser']))).replace("'None'", "Null"), env_connect_dict_all['loanuser'])
-        return "pass"
 
 
 
