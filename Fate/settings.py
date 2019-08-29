@@ -41,8 +41,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_swagger',
     'accounts',
+    'common_function',
     'data_migration',
     'swagger',
+    'test_cases',
 ]
 
 # swagger 配置项

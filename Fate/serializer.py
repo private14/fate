@@ -12,3 +12,9 @@ class CopyProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = CopyProduct
         fields = '__all__'
+
+
+class RandomListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RandomList
+        fields = '__all__'

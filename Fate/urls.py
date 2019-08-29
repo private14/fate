@@ -19,7 +19,8 @@ from data_migration.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    #path('data/migration/', include('data_migration.urls')),
-    path('swagger/', include('swagger.urls')),
+    path('data/migration/', include('data_migration.urls')),
+    path('common/', include('common_function.urls')),
+    #path('swagger/', include('swagger.urls')),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]

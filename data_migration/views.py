@@ -477,6 +477,5 @@ class DataView(APIView):
                     if select_mysql('select * from user_organization_info where {}="{}"'.format('organ_id', organ_id), sit1_connect_dict_all['loanuser']) != []:
                         operate_mysql('INSERT INTO user_organization_info VALUES {};'.format(insert_data(select_mysql('select * from user_organization_info where {}="{}"'.format('organ_id', organ_id), sit1_connect_dict_all['loanuser']))).replace("'None'", "Null"), env_connect_dict_all['loanuser'])
 
-
-
+        return 'pass'
 

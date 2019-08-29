@@ -77,3 +77,21 @@ class CopyProduct(models.Model):
     class Meta:
         db_table = 'CopyProduct'
         ordering = ['id']
+
+
+# 使用过的手机号 名字
+class RandomList(models.Model):
+    # id
+    id = models.AutoField(primary_key=True)
+    # 名字
+    name = models.CharField(max_length=50)
+    # 手机号
+    telNumber = models.CharField(max_length=30)
+    # 身份证号
+    identityCard = models.CharField(max_length=30)
+    # 银行卡号
+    bankCard = models.CharField(max_length=30)
+
+    class Meta:
+        db_table = 'RandomList'
+        ordering = ['id']
